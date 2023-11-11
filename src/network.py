@@ -52,9 +52,10 @@ class Network:
     
     def set_current2(self):
         try:
-            self.currents[1] = (self.current[0] - self.resultant_mtrx[1][0]*self.tensions[1])/self.resultant_mtrx[1][1]
+            self.currents[1] = (self.currents[0] - self.resultant_mtrx[1][0]*self.tensions[1])/self.resultant_mtrx[1][1]
         except TypeError:
             try:
                 self.currents[1] = (self.tensions[0] - self.resultant_mtrx[0][0]*self.tensions[1])/self.resultant_mtrx[0][1]
             except TypeError:
                 raise ValueError('Missing data!')
+
