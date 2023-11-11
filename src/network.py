@@ -17,7 +17,6 @@ class Network:
                         [C, D]])
 
     def cascade_connection(self, *args):
-    
         if len(args) < 2:
             raise ValueError('This function needs at least 2 arguments')
             
