@@ -1,4 +1,5 @@
 import numpy as np
+from quadripoles import Quadripole, SeriesImpedance, ShuntAdmittance, PiCircuit, Transformer
 
 class Network:
     def __init__(self, v1=None, v2=None, i1=None, i2=None, resultant_mtrx = None):
@@ -10,7 +11,7 @@ class Network:
     def parallel_connection(self, matA, matB):
         A = np.dot(matA[0], matB[0][::-1])/(matA[0][1] + matB[0][1])
         B = (matA[0][1]*matB[0][1])/(matA[0][1] + matB[0][1])
-        C = matA[1][0] + matA[1][0] + 1/((matA[0][1] + matB[0][1])) * (matA[0][0]-matB[0][0])
+        C = matA[1][0] + matB[1][0] + (matA[0][0]-matB[0][0])*(matB[1][1]-matA[1][1])/((matA[0][1] + matB[0][1]))
         D = np.dot(matA[:,1], matB[::-1, 1])/(matA[0][1] + matB[0][1])
         
         return np.array([[A, B],
@@ -52,10 +53,9 @@ class Network:
     
     def set_current2(self):
         try:
-            self.currents[1] = (self.currents[0] - self.resultant_mtrx[1][0]*self.tensions[1])/self.resultant_mtrx[1][1]
+            self.currents[1] = (self.currents[0] + self.resultant_mtrx[1][0]*self.tensions[1])/self.resultant_mtrx[1][1]
         except TypeError:
             try:
                 self.currents[1] = (self.tensions[0] - self.resultant_mtrx[0][0]*self.tensions[1])/self.resultant_mtrx[0][1]
             except TypeError:
                 raise ValueError('Missing data!')
-

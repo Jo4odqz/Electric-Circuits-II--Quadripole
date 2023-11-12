@@ -30,13 +30,6 @@ class PiCircuit(Quadripole):
 class Transformer(Quadripole):
     def __init__(self, n, z1, z2, y, V1 = None, I1 = None, V2 = None, I2  = None):
         super().__init__(V1, I1, V2, I2)
-        self.net_mtrx = np.array([[1/n * 1/(1+ y*z1), n*(z1 + z2 + y*z1*z2)], 
+        self.net_mtrx = np.array([[1/n * (1+ y*z1), n*(z1 + z2 + y*z1*z2)], 
                                  [1/n * y, n*(1+y*z2)]])
         pass
-
-
-rkm = 0.172
-xlkm = 120*np.pi*2.18e-3j
-xckm = 1/(120*np.pi*0.0136e-6j)
-
-lt1 = PiCircuit(z= rkm*100 + xlkm*100, y1=2/(xckm*100), y2=2/(xckm*100))
